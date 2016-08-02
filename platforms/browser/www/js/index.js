@@ -24,9 +24,12 @@ function loadPage(id,tran) {
                 success: function (result){
                     $("body").append(result.css);
                     $("body").append(result.html);
-                    waitForLoad(href,tran,result,waitForLoadScript);
-                    //$("body").append(result.script);
-                    //callWhenReady(href,tran, moveToOtherPage);
+                    alert ("in loadpage" + result.script.length);
+                    if (result.script.length > 0) 
+                        { waitForLoadHTML(href,tran,result,waitForLoadScript);
+                        } else {
+                          waitForLoadHTML(href,tran,result,moveToOtherPage);     
+                        }
                 },
                 error: function (result, ajaxOptions, thrownError) {
                      alert(result.responseText);
@@ -44,18 +47,44 @@ function cleanAndReload(){
      $("style[loaded='yes']").remove();
      loadPage("welcomepage",'');
 }       
-function waitForLoad(selector,tran,result,callback) {
+function callWhenReady(selector,tran, callback) {
     if ($(selector).closest('body').length) {
-        $("body").append(result.script);
-        callback(selector,tran,moveToOtherPage);
+        callback(selector,tran);
     } else {
         setTimeout(function () {
-            waitForLoad(selector,tran,result,callback);
+            callWhenReady(selector,tran, callback);
+        }, 100);
+    }
+} 
+function waitForLoadHTML(selector,tran,result,callback) {
+      alert ("in waitfor loadhtml before if" + result.script.length);
+
+    if ($(selector).closest('body').length) {
+        alert ("in waitfor loadhtml after if" + result.script.length);
+
+        if (result.script.length > 0) {
+           alert ("in waitfor loadhtml before append" + result.script.length);
+            $("body").append(result.script);
+            alert ("in waitfor loadhtml after append" + result.script.length);
+
+            
+
+            callback(selector,tran,moveToOtherPage);
+        } else {
+            callback(selector,tran)
+        }
+    } else {
+        setTimeout(function () {
+            waitForLoadHTML(selector,tran,result,callback);
         }, 100);
     }
 }
 function waitForLoadScript(selector,tran, callback) {
-    if ($(selector + "script").closest('body').length) {
+        alert ("in waitfor loadscript before if");
+
+    if ($(selector + "script").closest('body').length)  {
+         alert ("in waitfor loadscript after if");
+
         callback(selector,tran);
     } else {
         setTimeout(function () {
@@ -64,5 +93,7 @@ function waitForLoadScript(selector,tran, callback) {
     }
 } 
 function moveToOtherPage(href,tran) {
+   //alert ("in move to other page" );
+
     $.mobile.changePage(href,{transition: tran}); 
 }

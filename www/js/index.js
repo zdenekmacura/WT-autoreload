@@ -63,7 +63,12 @@ function waitForLoadHTML(selector,tran,result,callback) {
         alert ("in waitfor loadhtml after if" + result.script.length);
 
         if (result.script.length > 0) {
+           alert ("in waitfor loadhtml before append" + result.script.length);
             $("body").append(result.script);
+            alert ("in waitfor loadhtml after append" + result.script.length);
+
+            
+
             callback(selector,tran,moveToOtherPage);
         } else {
             callback(selector,tran)
