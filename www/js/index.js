@@ -57,7 +57,6 @@ function callWhenReady(selector,tran, callback) {
 } 
 function waitForLoadHTML(selector,tran,result,callback) {
     if ($(selector).closest('body').length) {
-        alert(result.script.length);
         if (result.script.length > 0) {
             $("body").append(result.script);
             callback(selector,tran,moveToOtherPage);
