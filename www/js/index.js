@@ -49,7 +49,7 @@ function callWhenReady(selector,tran, callback) {
     } else {
         setTimeout(function () {
             callWhenReady(selector,tran, callback);
-        }, 10);
+        }, 100);
     }
 } 
 function moveToOtherPage(href,tran) {
