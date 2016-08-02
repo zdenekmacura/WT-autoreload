@@ -11,7 +11,6 @@ function loadPage(id,tran) {
     href = "#" + id;
 
     if ( $(href).length == 0) {
-        alert(senddata);    
     $.ajax({
                 type: "post",
                 url: url,
@@ -25,7 +24,6 @@ function loadPage(id,tran) {
                 success: function (result){
                     $("body").append(result.css);
                     $("body").append(result.html);
-                    alert ("in loadpage" + result.script.length);
                     if (result.script.length > 0) 
                         { waitForLoadHTML(href,tran,result,waitForLoadScript);
                         } else {
@@ -33,7 +31,7 @@ function loadPage(id,tran) {
                         }
                 },
                 error: function (result, ajaxOptions, thrownError) {
-                     alert("hhu" + result.responseText);
+                     alert("Error when loading page:" + result.responseText);
                 }
     });
     } else {
@@ -58,21 +56,15 @@ function callWhenReady(selector,tran, callback) {
     }
 } 
 function waitForLoadHTML(selector,tran,result,callback) {
-      alert ("in waitfor loadhtml before if" + result.script.length);
 
     if ($(selector).closest('body').length) {
-        alert ("in waitfor loadhtml after if" + result.script.length);
 
         if (result.script.length > 0) {
-           alert ("in waitfor loadhtml before append" + result.script.length);
-            //$("body").append(result.script);
             var script   = document.createElement("script");
             script.type  = "text/javascript";
             script.text  = result.script;             
             script.id = result.id + "script";
             document.body.appendChild(script);
-
-            alert ("in waitfor loadhtml after append" + result.script.length);
             callback(selector,tran,moveToOtherPage);
         } else {
             callback(selector,tran)
@@ -84,10 +76,8 @@ function waitForLoadHTML(selector,tran,result,callback) {
     }
 }
 function waitForLoadScript(selector,tran, callback) {
-        alert ("in waitfor loadscript before if");
 
     if ($(selector + "script").closest('body').length)  {
-         alert ("in waitfor loadscript after if");
 
         callback(selector,tran);
     } else {
@@ -97,7 +87,5 @@ function waitForLoadScript(selector,tran, callback) {
     }
 } 
 function moveToOtherPage(href,tran) {
-   //alert ("in move to other page" );
-
     $.mobile.changePage(href,{transition: tran}); 
 }
