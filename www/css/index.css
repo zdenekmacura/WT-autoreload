@@ -1,0 +1,42 @@
+x   
+/*@media only screen and (max-device-width: 480px) {
+
+.ui-btn {
+    font-size: 15px;
+    padding: 5px;
+}
+
+}
+
+@media only screen and (max-device-width: 1180px) {
+
+.ui-btn {
+    font-size: 15px;
+    padding: 5px;
+}
+
+}
+
+@media only screen and (max-device-width: 1480px) {
+
+.ui-btn {
+    font-size: 15px;
+    padding: 5px;
+}
+
+}*/
+
+h1 {
+    display: inline-block;
+}
+
+h2 {
+    white-space: normal;
+}
+
+.ui-header .ui-title {
+    margin-right: 10%;
+    margin-left: 10%;
+    overflow: visible;
+    white-space: normal;
+}
