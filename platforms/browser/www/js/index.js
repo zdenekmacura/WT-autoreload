@@ -24,8 +24,11 @@ function loadPage(id,tran) {
                 success: function (result){
                     $("body").append(result.css);
                     $("body").append(result.html);
-                    $("body").append(result.script);
-                    callWhenReady(href,tran, moveToOtherPage);
+                    if (result.script.length > 0) 
+                        { waitForLoadHTML(href,tran,result,waitForLoadScript);
+                        } else {
+                          waitForLoadHTML(href,tran,result,moveToOtherPage);     
+                        }
                 },
                 error: function (result, ajaxOptions, thrownError) {
                      alert(result.responseText);
@@ -49,6 +52,30 @@ function callWhenReady(selector,tran, callback) {
     } else {
         setTimeout(function () {
             callWhenReady(selector,tran, callback);
+        }, 100);
+    }
+} 
+function waitForLoadHTML(selector,tran,result,callback) {
+    if ($(selector).closest('body').length) {
+        alert(result.script.length);
+        if (result.script.length > 0) {
+            $("body").append(result.script);
+            callback(selector,tran,moveToOtherPage);
+        } else {
+            callback(selector,tran)
+        }
+    } else {
+        setTimeout(function () {
+            waitForLoadHTML(selector,tran,result,callback);
+        }, 100);
+    }
+}
+function waitForLoadScript(selector,tran, callback) {
+    if ($(selector + "script").closest('body').length)  {
+        callback(selector,tran);
+    } else {
+        setTimeout(function () {
+            waitForLoadScript(selector,tran, callback);
         }, 100);
     }
 } 
