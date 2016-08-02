@@ -24,11 +24,9 @@ function loadPage(id,tran) {
                 success: function (result){
                     $("body").append(result.css);
                     $("body").append(result.html);
-                    if (result.script.length > 0) 
-                        { waitForLoadHTML(href,tran,result,waitForLoadScript);
-                        } else {
-                          waitForLoadHTML(href,tran,result,moveToOtherPage);     
-                        }
+                    waitForLoad(href,tran,result,waitForLoadScript);
+                    //$("body").append(result.script);
+                    //callWhenReady(href,tran, moveToOtherPage);
                 },
                 error: function (result, ajaxOptions, thrownError) {
                      alert(result.responseText);
@@ -46,31 +44,18 @@ function cleanAndReload(){
      $("style[loaded='yes']").remove();
      loadPage("welcomepage",'');
 }       
-function callWhenReady(selector,tran, callback) {
+function waitForLoad(selector,tran,result,callback) {
     if ($(selector).closest('body').length) {
-        callback(selector,tran);
+        $("body").append(result.script);
+        callback(selector,tran,moveToOtherPage);
     } else {
         setTimeout(function () {
-            callWhenReady(selector,tran, callback);
-        }, 100);
-    }
-} 
-function waitForLoadHTML(selector,tran,result,callback) {
-    if ($(selector).closest('body').length) {
-        if (result.script.length > 0) {
-            $("body").append(result.script);
-            callback(selector,tran,moveToOtherPage);
-        } else {
-            callback(selector,tran)
-        }
-    } else {
-        setTimeout(function () {
-            waitForLoadHTML(selector,tran,result,callback);
+            waitForLoad(selector,tran,result,callback);
         }, 100);
     }
 }
 function waitForLoadScript(selector,tran, callback) {
-    if ($(selector + "script").closest('body').length)  {
+    if ($(selector + "script").closest('body').length) {
         callback(selector,tran);
     } else {
         setTimeout(function () {

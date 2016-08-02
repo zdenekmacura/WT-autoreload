@@ -24,6 +24,7 @@ function loadPage(id,tran) {
                 success: function (result){
                     $("body").append(result.css);
                     $("body").append(result.html);
+                    alert ("in loadpage" + result.script.length);
                     if (result.script.length > 0) 
                         { waitForLoadHTML(href,tran,result,waitForLoadScript);
                         } else {
@@ -56,7 +57,11 @@ function callWhenReady(selector,tran, callback) {
     }
 } 
 function waitForLoadHTML(selector,tran,result,callback) {
+      alert ("in waitfor loadhtml before if" + result.script.length);
+
     if ($(selector).closest('body').length) {
+        alert ("in waitfor loadhtml after if" + result.script.length);
+
         if (result.script.length > 0) {
             $("body").append(result.script);
             callback(selector,tran,moveToOtherPage);
@@ -70,7 +75,11 @@ function waitForLoadHTML(selector,tran,result,callback) {
     }
 }
 function waitForLoadScript(selector,tran, callback) {
+        alert ("in waitfor loadscript before if");
+
     if ($(selector + "script").closest('body').length)  {
+         alert ("in waitfor loadscript after if");
+
         callback(selector,tran);
     } else {
         setTimeout(function () {
@@ -79,5 +88,7 @@ function waitForLoadScript(selector,tran, callback) {
     }
 } 
 function moveToOtherPage(href,tran) {
+   //alert ("in move to other page" );
+
     $.mobile.changePage(href,{transition: tran}); 
 }
