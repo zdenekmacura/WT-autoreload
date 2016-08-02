@@ -11,6 +11,7 @@ function loadPage(id,tran) {
     href = "#" + id;
 
     if ( $(href).length == 0) {
+        alert(senddata);
     $.ajax({
                 type: "post",
                 url: url,
@@ -32,7 +33,7 @@ function loadPage(id,tran) {
                         }
                 },
                 error: function (result, ajaxOptions, thrownError) {
-                     alert(result.responseText);
+                     alert("hhu" + result.responseText);
                 }
     });
     } else {
@@ -64,11 +65,14 @@ function waitForLoadHTML(selector,tran,result,callback) {
 
         if (result.script.length > 0) {
            alert ("in waitfor loadhtml before append" + result.script.length);
-            $("body").append(result.script);
+            //$("body").append(result.script);
+            var script   = document.createElement("script");
+            script.type  = "text/javascript";
+            script.text  = result.script;             
+            script.id = result.id;
+            document.body.appendChild(script);
+
             alert ("in waitfor loadhtml after append" + result.script.length);
-
-            
-
             callback(selector,tran,moveToOtherPage);
         } else {
             callback(selector,tran)
