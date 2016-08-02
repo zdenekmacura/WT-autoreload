@@ -11,7 +11,7 @@ function loadPage(id,tran) {
     href = "#" + id;
 
     if ( $(href).length == 0) {
-        alert(senddata);
+        alert(senddata);    
     $.ajax({
                 type: "post",
                 url: url,
@@ -69,7 +69,7 @@ function waitForLoadHTML(selector,tran,result,callback) {
             var script   = document.createElement("script");
             script.type  = "text/javascript";
             script.text  = result.script;             
-            script.id = result.id;
+            script.id = result.id + "script";
             document.body.appendChild(script);
 
             alert ("in waitfor loadhtml after append" + result.script.length);

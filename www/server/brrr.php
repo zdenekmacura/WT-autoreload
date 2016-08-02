@@ -45,13 +45,13 @@ JDEBUG ? $_PROFILER->setStart($startTime, $startMem)->mark('afterLoad') : null;
 
 defined('_JEXEC') or die;
 // Include the syndicate functions only once
-//require_once dirname(__FILE__) . '/helper.php';
+require_once dirname(__FILE__) . '/helper.php';
 
-/*$post = BrrrHelper::getPostArray();
+$post = BrrrHelper::getPostArray();
 $get = BrrrHelper::getGetArray();
 
-if (isset($get["loadpage"])) {
-	$page = BrrrHelper::loadPage($get["loadpage"]);
+if (isset($post["loadpage"])) {
+	$page = BrrrHelper::loadPage($post["loadpage"]);
 	exit(json_encode($page));
 }
 
@@ -82,7 +82,7 @@ if (isset($get["getwifitemps"]) && ($get["getwifitemps"]=='yes') && isset($get["
 	$TSbyUserIdList = BrrrHelper::getTSByUserId($get["userid"]);
         echo json_encode($TSbyUserIdList);
 }
-*/
+
 
 
  

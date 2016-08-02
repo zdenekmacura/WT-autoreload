@@ -30,7 +30,7 @@ class BrrrHelper
    public static function loadPage ($pageid) {
 	$db = JFactory::getDbo();
 	$query = $db->getQuery(true)
-            ->select(array('html','script','css'))
+            ->select(array('id','html','script','css'))
             ->from($db->quoteName('pages'))
             ->where('id = ' . $db->Quote($pageid));
 	$db->setQuery($query);
