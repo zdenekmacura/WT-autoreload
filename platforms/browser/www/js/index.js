@@ -2,7 +2,7 @@ var url="http://www.brrr.cz/brrr.php?";
 var href="";
 
 $(document).ready(function(){
-     if ( $("#welcomepage").length == 0) loadPage("welcomepage",'');
+     if ( $("#welcomepage").length == 0) loadPage("welcomepage","slideup");
 });
 
 function loadPage(id,tran) {

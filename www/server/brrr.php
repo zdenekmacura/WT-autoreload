@@ -54,6 +54,16 @@ if (isset($post["loadpage"])) {
 	$page = BrrrHelper::loadPage($post["loadpage"]);
 	exit(json_encode($page));
 }
+if (isset($post["savescriptpage"])) {
+	$page = BrrrHelper::saveScriptPage($post["savescriptpage"],$post["type"],$_POST["scriptdata"]);
+	exit(json_encode($page));
+}
+
+if (isset($post["getpagelist"])) {
+	$page = BrrrHelper::getPageList();
+	exit(json_encode($page));
+}
+
 
 if (isset($post["prihlaseni"])) {
 	$userInfos = BrrrHelper::checkLogin($post["email"],$post["password"]);
@@ -81,6 +91,25 @@ if (isset($get["registrace"])) {
 if (isset($get["getwifitemps"]) && ($get["getwifitemps"]=='yes') && isset($get["userid"])) {
 	$TSbyUserIdList = BrrrHelper::getTSByUserId($get["userid"]);
         echo json_encode($TSbyUserIdList);
+}
+
+if (isset($post["runpagephp"])) {
+		$page = BrrrHelper::loadPage($post["runpagephp"]);
+		eval ($page->php);
+}
+if (isset($get["runpagephp"]) && isset($get["secret"])) {
+		$page = BrrrHelper::loadPage($get["runpagephp"]);
+		eval ($page->php);
+}
+
+if (isset($get["testconnection"]) && ($get["testconnection"]=='yes') && isset($get["ssid"])) {
+	$result = BrrrHelper::logTestConnection($get["ssid"],$get["wifiname"]);
+    echo "OK";
+}
+
+if (isset($get["temp"]) && isset($get["ssid"])) {
+	$result = BrrrHelper::logTemperature($get["ssid"],$get["temp"]);
+    echo "Temp logged";
 }
 
 

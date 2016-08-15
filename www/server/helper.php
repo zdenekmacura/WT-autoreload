@@ -27,15 +27,110 @@ class BrrrHelper
     return $addressID;
 }
 
+public static function logTestConnection($ssid,$wifiname) {
+	$db = JFactory::getDbo();
+    $query = $db->getQuery(true);
+
+	$columns = array('ssid','wifiname', 'time_logged');
+ 	$values = array($db->quote($ssid),$db->quote($wifiname),'now()');
+	$query
+    ->insert($db->quoteName('log_test_connection'))
+    ->columns($db->quoteName($columns))
+    ->values(implode(',', $values));
+
+	try {
+	$db->setQuery($query);
+	$result = $db->execute();
+	}
+	catch (Exception $e) {
+    return $e;
+	}
+    return $result;
+}
+
+public static function logTemperature($ssid,$temp) {
+	$db = JFactory::getDbo();
+    $query = $db->getQuery(true);
+
+	$columns = array('ssid','teplota', 'date');
+ 	$values = array($db->quote($ssid),$db->quote($temp),'now()');
+	$query
+    ->insert($db->quoteName('teplota'))
+    ->columns($db->quoteName($columns))
+    ->values(implode(',', $values));
+
+	try {
+	$db->setQuery($query);
+	$result = $db->execute();
+	}
+	catch (Exception $e) {
+    return $e;
+	}
+    return $result;
+}
+
+public static function saveScriptPage($pagename,$type,$text)
+	{
+	$db = JFactory::getDbo();
+    $query = $db->getQuery(true);
+   	$columnslog = array('id', 'html', 'script', 'css','php', 'update_time');
+    if ($type == "script") {
+ 	$fields = array(
+ 			$db->quoteName('script') . ' = ' . $db->Quote($text),
+ 			$db->quoteName('last_modified') . ' =  now()'
+ 			);
+	$valueslog = array($db->Quote($pagename),'""', $db->Quote($text),'""','""','now()');
+ 	}
+ 	if ($type == "html") {
+ 	$fields = array(
+ 			$db->quoteName('html') . ' = ' . $db->Quote($text),
+ 			$db->quoteName('last_modified') . ' =  now()'
+ 			);
+	$valueslog = array($db->Quote($pagename),$db->Quote($text),'""','""','""', 'now()');
+ 	}
+ 	if ($type == "php") {
+ 	$fields = array(
+ 			$db->quoteName('php') . ' = ' . $db->Quote($text),
+ 			$db->quoteName('last_modified') . ' =  now()'
+ 			);
+	$valueslog = array($db->Quote($pagename),'""','""','""',$db->Quote($text), 'now()');
+ 	}
+    $query->update($db->quoteName('pages'))->set($fields)->where('id = ' . $db->Quote($pagename));
+    $db->setQuery($query);
+    $result = $db->execute();
+    $rows = $db->getAffectedRows();
+    ///part fot log
+    $querylog = $db->getQuery(true);
+
+    $querylog
+    ->insert($db->quoteName('pages_log'))
+    ->columns($db->quoteName($columnslog))
+    ->values(implode(',', $valueslog));
+    $db->setQuery($querylog);
+	$resultlog = $db->execute();
+
+	return $rows;
+	}
+
    public static function loadPage ($pageid) {
 	$db = JFactory::getDbo();
 	$query = $db->getQuery(true)
-            ->select(array('id','html','script','css'))
+            ->select(array('id','html','script','css','php'))
             ->from($db->quoteName('pages'))
             ->where('id = ' . $db->Quote($pageid));
 	$db->setQuery($query);
 	$result = $db->loadObject();
 	return $result;
+   }
+
+    public static function getPageList () {
+	$db = JFactory::getDbo();
+	$query = $db->getQuery(true)
+            ->select(array('id'))
+            ->from($db->quoteName('pages'));
+	$db->setQuery($query);
+	$column = $db->loadColumn();
+	return $column;
    }
 
 
