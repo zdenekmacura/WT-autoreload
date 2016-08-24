@@ -6,15 +6,17 @@ $(document).ready(function(){
 });
 
 function loadPage(id,tran) {
-    loadPageTypeParent(id,tran,"page","body");
+    loadPageTypeParent(id,tran,"page","body","false");
 }
 
-function loadPageTypeParent(id,tran,type,parent) {
+function loadPageTypeParent(id,tran,type,parent,reload) {
 
     var senddata = {loadpage: id};
     href = "#" + id;
+    var idexist = $(href).length;
+    if (( idexist == 0) || (reload == "true")) {
 
-    if ( $(href).length == 0) {
+    if ( idexist > 0) { $(href).remove(); $(href + "script").remove();}
     $.ajax({
                 type: "post",
                 url: url,
@@ -30,9 +32,9 @@ function loadPageTypeParent(id,tran,type,parent) {
                     $(parent).append(result.css);
                     $(parent).append(result.html);
                     if (result.script.length > 0) 
-                        { waitForLoadHTML(href,tran,type,result,waitForLoadScript);
+                        { waitForLoadHTML(href,tran,type,result,parent,waitForLoadScript);
                         } else {
-                          waitForLoadHTML(href,tran,type,result,moveToOtherPage);     
+                          waitForLoadHTML(href,tran,type,result,parent,moveToOtherPage);     
                         }
                 },
                 error: function (result, ajaxOptions, thrownError) {
@@ -44,7 +46,7 @@ function loadPageTypeParent(id,tran,type,parent) {
         $.mobile.changePage(href,{transition:tran});
         }
         if (type == "popup") {
-        $(href).popup();
+        $(href).popup( "option", "positionTo", parent);
         $(href).popup( "open", {transition:tran});
         }
     }
@@ -66,7 +68,7 @@ function callWhenReady(selector,tran, callback) {
         }, 100);
     }
 } 
-function waitForLoadHTML(selector,tran,type,result,callback) {
+function waitForLoadHTML(selector,tran,type,result,parent,callback) {
 
     if ($(selector).closest('body').length) {
 
@@ -76,33 +78,34 @@ function waitForLoadHTML(selector,tran,type,result,callback) {
             script.text  = result.script;             
             script.id = result.id + "script";
             document.body.appendChild(script);
-            callback(selector,tran,type,moveToOtherPage);
+            callback(selector,tran,type,parent,moveToOtherPage);
         } else {
-            callback(selector,tran,type)
+            callback(selector,tran,type,parent)
         }
     } else {
         setTimeout(function () {
-            waitForLoadHTML(selector,tran,result,callback);
+            waitForLoadHTML(selector,tran,result,parent,callback);
         }, 100);
     }
 }
-function waitForLoadScript(selector,tran,type, callback) {
+function waitForLoadScript(selector,tran,type,parent,callback) {
 
     if ($(selector + "script").closest('body').length)  {
 
-        callback(selector,tran,type);
+        callback(selector,tran,type,parent);
     } else {
         setTimeout(function () {
-            waitForLoadScript(selector,tran,type,callback);
+            waitForLoadScript(selector,tran,type,parent,callback);
         }, 100);
     }
 } 
-function moveToOtherPage(href,tran,type) {
+function moveToOtherPage(href,tran,type,parent) {
     if (type == "page") {
         $.mobile.changePage(href,{transition:tran});
         }
         if (type == "popup") {
-        $(href).popup();
+        $(href).popup({positionTo: "popuppos", tolerance: "100,30,20,30" });
+        $(href).popup( "option", "positionTo", parent);
         $(href).popup( "open", {transition:tran});
         }
 }
