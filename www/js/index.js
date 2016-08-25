@@ -104,7 +104,7 @@ function moveToOtherPage(href,tran,type,parent) {
         $.mobile.changePage(href,{transition:tran});
         }
         if (type == "popup") {
-        //$(href).popup({positionTo: "popuppos", tolerance: "100,30,20,30" });
+        $(href).popup();
         $(href).popup( "option", "positionTo", parent);
         $(href).popup( "open", {transition:tran});
         }
