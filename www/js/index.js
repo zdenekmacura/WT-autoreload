@@ -1,5 +1,8 @@
 var url="http://www.brrr.cz/brrr.php?";
 var href="";
+var loading=0;
+
+
 
 $(document).ready(function(){
      if ( $("#welcomepage").length == 0) loadPage("welcomepage","slideup");
@@ -17,6 +20,22 @@ function loadPageTypeParent(id,tran,type,parent,reload) {
     if (( idexist == 0) || (reload == "true")) {
 
     if ( idexist > 0) { $(href).remove(); $(href + "script").remove();}
+        loading = 0;
+        getDataByAjax(url,senddata,href,tran,type,parent);
+    } else {
+        if (type == "page") {
+        $.mobile.changePage(href,{transition:tran});
+        }
+        if (type == "popup") {
+        $(href).popup( "option", "positionTo", parent);
+        $(href).popup( "open", {transition:tran});
+        }
+    }
+
+}
+
+function getDataByAjax(url,senddata,href,tran,type,parent) {
+    var loading = 0;
     $.ajax({
                 type: "post",
                 url: url,
@@ -38,19 +57,14 @@ function loadPageTypeParent(id,tran,type,parent,reload) {
                         }
                 },
                 error: function (result, ajaxOptions, thrownError) {
-                     alert("Error when loading page:" + result.responseText);
+                    if (loading==5) {
+                       alert("Error when loading page, attemps to connect:" + i + ":" + result.responseText);
+                       return;
+                    }
+                     setTimeout(function () {
+                        loading++; getDataByAjax(url,senddata,href,tran,type,parent); }, 1000)
                 }
     });
-    } else {
-        if (type == "page") {
-        $.mobile.changePage(href,{transition:tran});
-        }
-        if (type == "popup") {
-        $(href).popup( "option", "positionTo", parent);
-        $(href).popup( "open", {transition:tran});
-        }
-    }
-
 }
 
 function cleanAndReload(){
