@@ -4,14 +4,9 @@ var loading=0;
 var iphone=0;
 
 
-
-//$(document).ready(function(){
-  //       if ( $("#welcomepage").length == 0) loadPage("welcomepage","slideup");
-
-//});
-$(document).on("pageshow","#default",function(event, ui){
-         if ( $("#welcomepage").length == 0) loadPage("welcomepage","slideup");
-});
+function startwelcome() {
+    if ( $("#welcomepage").length == 0) loadPage("welcomepage","slideup");
+}
 
 function loadPage(id,tran) {
     loadPageTypeParent(id,tran,"page","body","false");

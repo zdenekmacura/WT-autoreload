@@ -23,9 +23,27 @@
   </div>
 
   <div data-role="main" class="ui-content">
+  <input type="button" onClick="startwelcome();">Click</input>
   <script> 
-  if(navigator.onLine) { 
-   document.write("Cekejte");
+    if(navigator.onLine) { 
+    document.write("Cekejte");
+         function scriptReady(){
+            startwelcome();
+        }
+        function getScript(src, callback) {
+            var s = document.createElement('script');
+            s.src = src;
+            s.async = true;
+            s.onreadystatechange = s.onload = function() {
+            if (!callback.done && (!s.readyState || /loaded|complete/.test(s.readyState))) {
+              callback.done = true;
+              callback();
+            }
+        };
+        document.querySelector('head').appendChild(s);
+        }
+        getScript("http://www.brrr.cz/js/index.js",scriptReady);
+
 } else {
    document.write("Nejste připojeni k síti. Připojte se k síti a program znovu spuste.");
 }
@@ -36,9 +54,6 @@
   </div>
 
 </div>
-
-    <script src="http://www.brrr.cz/js/index.js"></script>
-
 </body>
 </html>
 
