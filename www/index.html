@@ -23,11 +23,12 @@
   </div>
 
   <div data-role="main" class="ui-content">
-  <input type="button" onClick="startwelcome();">Click</input>
+  <input type="button" onClick="scriptReady();" value="click">
   <script> 
     if(navigator.onLine) { 
     document.write("Cekejte");
          function scriptReady(){
+            alert("starting script ...");
             startwelcome();
         }
         function getScript(src, callback) {

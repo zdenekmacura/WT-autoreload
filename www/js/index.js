@@ -5,6 +5,7 @@ var iphone=0;
 
 
 function startwelcome() {
+    alert("halo");
     if ( $("#welcomepage").length == 0) loadPage("welcomepage","slideup");
 }
 
