@@ -12,6 +12,7 @@
     <script src="js/jquery-1.11.3.min.js"></script>
     <script src="js/jquery.mobile-1.4.5.js"></script>
     <script src="js/jquery.mobile.simpledialog2.js"></script>
+    <script src="http://www.brrr.cz/js/index.js"></script>
     <link rel="stylesheet" type="text/css" href="css/index.css" />
     <title>Wifi teploměr</title>
 </head>
@@ -23,10 +24,10 @@
   </div>
 
   <div data-role="main" class="ui-content">
-  <input type="button" onClick="scriptReady();" value="click">
+  <input type="button" onClick="startwelcome();" value="click">
   <script> 
     if(navigator.onLine) { 
-    document.write("Cekejte");
+        document.write("Cekejte");
          function scriptReady(){
             alert("starting script ...");
             startwelcome();
