@@ -17,9 +17,28 @@
 </head>
 <body>
 <div data-role="page" id="default">
+
+  <div data-role="header">
+    <h1>Wifi teploměr</h1>
+  </div>
+
+  <div data-role="main" class="ui-content">
+  <script> 
+  if(navigator.onLine) { 
+   document.write("Cekejte");
+} else {
+   document.write("Nejste připojeni k síti. Připojte se k síti a program znovu spuste.");
+}
+</script>
+  </div>
+
+  <div data-role="footer">
+  </div>
+
 </div>
 
-<script src="js/index.js"></script>
+    <script src="http://www.brrr.cz/js/index.js"></script>
+
 </body>
 </html>
 
