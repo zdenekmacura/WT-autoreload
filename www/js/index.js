@@ -1,11 +1,16 @@
 var url="http://www.brrr.cz/brrr.php?";
 var href="";
 var loading=0;
+var iphone=0;
 
 
 
-$(document).ready(function(){
-     if ( $("#welcomepage").length == 0) loadPage("welcomepage","slideup");
+//$(document).ready(function(){
+  //       if ( $("#welcomepage").length == 0) loadPage("welcomepage","slideup");
+
+//});
+$(document).on("pageshow","#default",function(event, ui){
+         if ( $("#welcomepage").length == 0) loadPage("welcomepage","slideup");
 });
 
 function loadPage(id,tran) {
@@ -24,7 +29,11 @@ function loadPageTypeParent(id,tran,type,parent,reload) {
         getDataByAjax(url,senddata,href,tran,type,parent);
     } else {
         if (type == "page") {
-        $.mobile.changePage(href,{transition:tran});
+            if (iphone) {
+                $.mobile.changePage(href,{transition:tran});
+            } else {
+                $.mobile.changePage(href);
+            }
         }
         if (type == "popup") {
         $(href).popup( "option", "positionTo", parent);
@@ -115,7 +124,11 @@ function waitForLoadScript(selector,tran,type,parent,callback) {
 } 
 function moveToOtherPage(href,tran,type,parent) {
     if (type == "page") {
-        $.mobile.changePage(href,{transition:tran});
+        if (iphone) {
+                $.mobile.changePage(href,{transition:tran});
+            } else {
+                $.mobile.changePage(href);
+            }
         }
         if (type == "popup") {
         $(href).popup();
