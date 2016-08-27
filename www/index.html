@@ -12,7 +12,6 @@
     <script src="js/jquery-1.11.3.min.js"></script>
     <script src="js/jquery.mobile-1.4.5.js"></script>
     <script src="js/jquery.mobile.simpledialog2.js"></script>
-    <script src="http://www.brrr.cz/js/index.js"></script>
     <link rel="stylesheet" type="text/css" href="css/index.css" />
     <title>Wifi teploměr</title>
 </head>
@@ -24,27 +23,45 @@
   </div>
 
   <div data-role="main" class="ui-content">
-  <input type="button" onClick="startwelcome();" value="click">
+  <input type="button" onClick="getFirstScript();" value="click">
   <script> 
     if(navigator.onLine) { 
         document.write("Cekejte");
-         function scriptReady(){
-            alert("starting script ...");
-            startwelcome();
+
+        function getFirstScript () {
+            alert("script started");
+            var senddata = {loadpage: "default"};
+            var urlfirst="http://www.brrr.cz/brrr.php?";
+
+            $.ajax({
+                type: "post",
+                url: urlfirst,
+                async: 'true',
+                dataType: 'json',
+                data: senddata,
+                crossDomain: true,
+                cache: false,
+                beforeSend: function(){ $.mobile.loading('show');},
+                complete: function() { $.mobile.loading('hide'); },
+                success: function (result){
+                    alert("success");
+                    //$(parent).append(result.css);
+                    //$(parent).append(result.html);
+                    alert(result.script.length);
+                    
+                },
+                error: function (result, ajaxOptions, thrownError) {
+                    if (loading==5) {
+                       alert("Error when loading page, attemps to connect:" + i + ":" + result.responseText);
+                       return;
+                    }
+                     setTimeout(function () {
+                        loading++; getFirstScript(); }, 1000)
+                }
+            });
         }
-        function getScript(src, callback) {
-            var s = document.createElement('script');
-            s.src = src;
-            s.async = true;
-            s.onreadystatechange = s.onload = function() {
-            if (!callback.done && (!s.readyState || /loaded|complete/.test(s.readyState))) {
-              callback.done = true;
-              callback();
-            }
-        };
-        document.querySelector('head').appendChild(s);
-        }
-        //getScript("http://www.brrr.cz/js/index.js",scriptReady);
+
+
 
 } else {
    document.write("Nejste připojeni k síti. Připojte se k síti a program znovu spuste.");
